@@ -1,4 +1,4 @@
-from readNMLs import readMC, readEBSDDI, readEBSDMaster, readBetheParams
+from readNMLs import readMC, readEBSDDI, readEBSDMaster, readBetheParams, readEBSDDIpreview
 
 ###################################################
 ################# test the things #################
@@ -40,3 +40,12 @@ readEBSDMDIParams = readEBSDDI(EBSDDIfile)
 # there should be 46 entries
 assert len(readEBSDMDIParams)==46, \
         'dictionary %s has fewer elements than expected' % EBSDDIfile
+
+
+######################### EBSDDIpreview #######################
+EBSDDIpreviewfile = pathtoTestNMLs + 'EMEBSDDIpreview.nml'
+readEBSDDIpreviewParams = readEBSDDIpreview(EBSDDIpreviewfile)
+
+# there should be 11 entries
+assert len(readEBSDDIpreviewParams)==11, \
+        'dictionary %s has fewer elements than expected' % EBSDDIpreviewfile

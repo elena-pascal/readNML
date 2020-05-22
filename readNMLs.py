@@ -1,12 +1,12 @@
 # read master NML files
 
 
-def readBetheParams(betheNMLfile):
+def readBetheParams(NMLfile):
     '''
     read all parameters in BetheParameters.nml to a dict
     '''
 
-    with open(betheNMLfile) as file:
+    with open(NMLfile) as file:
         #split into lines
         rawdata = file.read().split('\n')
 
@@ -28,17 +28,17 @@ def readBetheParams(betheNMLfile):
 
     # is the dict empty?
     assert bool(data), \
-        'dictionary data is empty after reading %s' % betheNMLfile
+        'dictionary data is empty after reading %s' % NMLfile
 
     return data
 
 
-def readMC(mcNMLfile):
+def readMC(NMLfile):
     '''
     read all parameters in master.nml to a dict
     '''
 
-    with open(mcNMLfile) as file:
+    with open(NMLfile) as file:
         #split into lines
         rawdata = file.read().split('\n')
 
@@ -75,18 +75,18 @@ def readMC(mcNMLfile):
 
     # is the dict empty?
     assert bool(data), \
-        'dictionary data is empty after reading %s' % mcNMLfile
+        'dictionary data is empty after reading %s' % NMLfile
 
     return data
 
 
 
-def readEBSDMaster(masterEBSDNMLfile):
+def readEBSDMaster(NMLfile):
     '''
     read all parameters in master.nml to a dict
     '''
 
-    with open(masterEBSDNMLfile) as file:
+    with open(NMLfile) as file:
         #split into lines
         rawdata = file.read().split('\n')
 
@@ -121,18 +121,18 @@ def readEBSDMaster(masterEBSDNMLfile):
 
     # is the dict empty?
     assert bool(data), \
-        'dictionary data is empty after reading %s' % masterEBSDNMLfile
+        'dictionary data is empty after reading %s' % NMLfile
 
     return data
 
 
 
-def readEBSDDI(EMBSDDINMLfile):
+def readEBSDDI(NMLfile):
     '''
     read all parameters in master.nml to a dict
     '''
 
-    with open(EMBSDDINMLfile) as file:
+    with open(NMLfile) as file:
         #split into lines
         rawdata = file.read().split('\n')
 
@@ -182,6 +182,54 @@ def readEBSDDI(EMBSDDINMLfile):
 
     # is the dict empty?
     assert bool(data), \
-        'dictionary data is empty after reading %s' % EMBSDDINMLfile
+        'dictionary data is empty after reading %s' % NMLfile
+
+    return data
+
+
+def readEBSDDIpreview(NMLfile):
+    '''
+    read all parameters in master.nml to a dict
+    '''
+
+    with open(NMLfile) as file:
+        #split into lines
+        rawdata = file.read().split('\n')
+
+    data = {}
+
+    for line in rawdata:
+        if line.strip(): # ignore empty lines
+            if not line.startswith(("!"," !", "&", " &", "/", " /")): # ignore comment lines
+                # split line at =
+                parameter = line.split("=")
+
+                # strip empty spaces from label
+                label = parameter[0].strip(" ")
+
+                if label in 'HDFstrings':
+                    data['HDFstrings'] = [par.strip("'") for par in parameter[1].strip(", ").split(" ")]
+
+                else:
+                    # trim whitespaces and commas
+                    param = parameter[1].strip(",' ")
+
+                    if (label in ['tifffile', 'patternfile', 'expfile', 'inputtype']):
+                        # assign strings to dictionary
+                        data[label] = param
+
+                    elif (label in ['nmu_x', 'num_y', 'ipf_wd', 'ipf_ht',\
+                                    'highpasswnsteps', 'nregionsmin', 'nregionsmax',\
+                                    'numav', 'patx', 'paty']):
+                        # assign int to dictionary
+                        data[label] = int(param)
+
+                    elif (label in ['highpasswmax']):
+                        # assign float to dictionary
+                        data[label] = float(param)
+
+    # is the dict empty?
+    assert bool(data), \
+        'dictionary data is empty after reading %s' % NMLfile
 
     return data
