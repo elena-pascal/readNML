@@ -49,11 +49,3 @@ readEBSDDIpreviewParams = readEBSDDIpreview(EBSDDIpreviewfile)
 # there should be 11 entries
 assert len(readEBSDDIpreviewParams)==11, \
         'dictionary %s has fewer elements than expected' % EBSDDIpreviewfile
-
-######################### FitOrientation ######################
-FitOrfile = pathtoTestNMLs + 'EMFitOrientation.nml'
-readEBSDDIpreviewParams = readEBSDDIpreview(EBSDDIpreviewfile)
-
-# there should be 11 entries
-assert len(readEBSDDIpreviewParams)==11, \
-        'dictionary %s has fewer elements than expected' % EBSDDIpreviewfile
