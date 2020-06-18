@@ -1,0 +1,4 @@
+*.pyc
+
+# Large files #
+*.h5
